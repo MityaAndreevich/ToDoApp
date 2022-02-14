@@ -9,7 +9,7 @@ import UIKit
 
 class ToDoListViewController: UITableViewController{
     
-    let itemArray = ["Find 10000$", "Buy Eggs", "Buy New G-Wagen"]
+    var itemArray = ["Find 10000$", "Buy Eggs", "Buy New G-Wagen"]
     
     override func viewWillAppear(_ animated: Bool) {
         setNavBar()
@@ -48,10 +48,18 @@ class ToDoListViewController: UITableViewController{
     //MARK: - Add New Items
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
+        var textField = UITextField()
+        
         let alert = UIAlertController(title: "Add new ToDo item", message: "", preferredStyle: .alert)
         let action  = UIAlertAction(title: "Add Item", style: .default) { action in
             //what will happen when the user click the Add item button on UIAlert
-            print("Success")
+            
+            self.itemArray.append(textField.text ?? "")
+        }
+        
+        alert.addTextField { alertTextField in
+            alertTextField.placeholder = "Create new item"
+            textField = alertTextField
         }
         
         alert.addAction(action)
