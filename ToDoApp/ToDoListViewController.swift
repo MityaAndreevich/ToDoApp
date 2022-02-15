@@ -61,7 +61,6 @@ class ToDoListViewController: UITableViewController{
             } else {
                 self.sendingAlertMessage(title: "Ooops, seems no input", message: "Please, enter what to do")
             }
-            
         }
         
         alert.addTextField { alertTextField in
@@ -72,9 +71,8 @@ class ToDoListViewController: UITableViewController{
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
-    
 }
-
+//MARK: - Navigation Bar Appearance
 extension ToDoListViewController {
     private func setNavBar() {
         let appearance = UINavigationBarAppearance()
@@ -85,7 +83,7 @@ extension ToDoListViewController {
         navigationItem.scrollEdgeAppearance = appearance
     }
 }
-   //MARK: - Private Custom Alert Message
+//MARK: - Private Custom Alert Message
 extension ToDoListViewController {
     private func sendingAlertMessage(title: String, message: String) {
         let alertMessage = UIAlertController(
