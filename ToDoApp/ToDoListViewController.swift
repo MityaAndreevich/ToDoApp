@@ -53,8 +53,15 @@ class ToDoListViewController: UITableViewController{
         let alert = UIAlertController(title: "Add new ToDo item", message: "", preferredStyle: .alert)
         let action  = UIAlertAction(title: "Add Item", style: .default) { action in
             //what will happen when the user click the Add item button on UIAlert
+            if let inputText = textField.text, inputText != "" {
+                self.itemArray.append(inputText)
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            } else {
+                self.sendingAlertMessage(title: "Ooops, seems no input", message: "Please, enter what to do")
+            }
             
-            self.itemArray.append(textField.text ?? "")
         }
         
         alert.addTextField { alertTextField in
@@ -76,5 +83,18 @@ extension ToDoListViewController {
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationItem.standardAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
+    }
+}
+   //MARK: - Private Custom Alert Message
+extension ToDoListViewController {
+    private func sendingAlertMessage(title: String, message: String) {
+        let alertMessage = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alertMessage.addAction(okAction)
+        present(alertMessage, animated: true)
     }
 }
