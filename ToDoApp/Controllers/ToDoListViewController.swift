@@ -45,13 +45,11 @@ class ToDoListViewController: UITableViewController{
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         var content = cell.defaultContentConfiguration()
-        content.text = itemArray[indexPath.row].title
         
-        if itemArray[indexPath.row].done == true {
-            cell.accessoryType = .checkmark
-        } else {
-            cell.accessoryType = .none
-        }
+        let item = itemArray[indexPath.row]
+        content.text = item.title
+        
+        cell.accessoryType  = item.done ? .checkmark : .none
         
         cell.contentConfiguration = content
         return cell
