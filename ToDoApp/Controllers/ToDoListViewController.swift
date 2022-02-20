@@ -13,15 +13,12 @@ class ToDoListViewController: UITableViewController{
     
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
     
-    //let defaults = UserDefaults.standard
-    
     override func viewWillAppear(_ animated: Bool) {
         setNavBar()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-         
         loadItems()
     }
     
@@ -67,16 +64,6 @@ class ToDoListViewController: UITableViewController{
             self.itemArray.append(newItem)
             
             self.saveItems()
-            
-           // self.defaults.set(self.itemArray, forKey: "ToDoListArray")
-            self.tableView.reloadData()
-            
-            /*if let inputText = textField.text, inputText != "" {
-                DispatchQueue.main.async {
-                }
-            } else {
-                self.sendingAlertMessage(title: "Ooops, seems no input", message: "Please, enter what to do")
-            }*/
         }
         
         alert.addTextField { alertTextField in
@@ -96,7 +83,7 @@ class ToDoListViewController: UITableViewController{
             try data.write(to: dataFilePath!)
             tableView.reloadData()
         } catch {
-          print("Error encoding item array, \(error)")
+            print("Error encoding item array, \(error)")
         }
     }
     
@@ -104,12 +91,11 @@ class ToDoListViewController: UITableViewController{
         if let data = try? Data(contentsOf: dataFilePath!) {
             let decoder = PropertyListDecoder()
             do {
-            itemArray = try decoder.decode([Item].self, from: data)
+                itemArray = try decoder.decode([Item].self, from: data)
             } catch {
                 print("Error decoding item array")
             }
         }
-        
     }
 }
 //MARK: - Navigation Bar Appearance
@@ -121,18 +107,5 @@ extension ToDoListViewController {
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationItem.standardAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
-    }
-}
-//MARK: - Private Custom Alert Message
-extension ToDoListViewController {
-    private func sendingAlertMessage(title: String, message: String) {
-        let alertMessage = UIAlertController(
-            title: title,
-            message: message,
-            preferredStyle: .alert
-        )
-        let okAction = UIAlertAction(title: "OK", style: .default)
-        alertMessage.addAction(okAction)
-        present(alertMessage, animated: true)
     }
 }
