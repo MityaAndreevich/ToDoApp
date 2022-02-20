@@ -9,9 +9,11 @@ import UIKit
 
 class ToDoListViewController: UITableViewController{
     
-    let defaults = UserDefaults.standard
-    
     var itemArray = [Item]()
+    
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+    
+    //let defaults = UserDefaults.standard
     
     override func viewWillAppear(_ animated: Bool) {
         setNavBar()
@@ -19,6 +21,8 @@ class ToDoListViewController: UITableViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(dataFilePath)
         
         let newItem = Item()
         newItem.title = "Find Lindsey"
@@ -32,8 +36,8 @@ class ToDoListViewController: UITableViewController{
         newItem3.title = "Buy G-Wagen"
         itemArray.append(newItem3)
          
-       // if let items = defaults.array(forKey: "ToDoListArray") as? [String] {
-         //   itemArray = items
+        //if let items = defaults.array(forKey: "ToDoListArray") as? [Item] {
+           // itemArray = items
         //}
     }
     
@@ -60,12 +64,8 @@ class ToDoListViewController: UITableViewController{
         
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         
-        /*if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-        } else {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        }*/
-        tableView.reloadData()
+        saveItems()
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -81,7 +81,10 @@ class ToDoListViewController: UITableViewController{
             newItem.title = textField.text ?? "New Task"
             
             self.itemArray.append(newItem)
-            self.defaults.set(self.itemArray, forKey: "ToDoListArray")
+            
+            self.saveItems()
+            
+           // self.defaults.set(self.itemArray, forKey: "ToDoListArray")
             self.tableView.reloadData()
             
             /*if let inputText = textField.text, inputText != "" {
@@ -99,6 +102,18 @@ class ToDoListViewController: UITableViewController{
         
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
+    }
+    
+    func saveItems() {
+        let encoder = PropertyListEncoder()
+        
+        do {
+            let data = try encoder.encode(itemArray)
+            try data.write(to: dataFilePath!)
+            tableView.reloadData()
+        } catch {
+          print("Error encoding item array, \(error)")
+        }
     }
 }
 //MARK: - Navigation Bar Appearance
