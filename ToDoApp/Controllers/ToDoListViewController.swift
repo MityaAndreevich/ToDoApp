@@ -82,10 +82,11 @@ class ToDoListViewController: UITableViewController{
         
         do {
             try context.save()
-            
         } catch {
             print("Error saving context, \(error)")
         }
+        
+        tableView.reloadData()
     }
     
    func loadItems() {
