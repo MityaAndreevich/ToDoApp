@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5F2EE11A2808541400DB4B13 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5F2EE1182808541400DB4B13 /* DataModel.xcdatamodeld */; };
+		5F2EE11C280F07AD00DB4B13 /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2EE11B280F07AD00DB4B13 /* CategoryTableViewController.swift */; };
 		5F35E50627B3EB0C00A44C71 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F35E50527B3EB0C00A44C71 /* AppDelegate.swift */; };
 		5F35E50827B3EB0C00A44C71 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F35E50727B3EB0C00A44C71 /* SceneDelegate.swift */; };
 		5F35E50A27B3EB0C00A44C71 /* ToDoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F35E50927B3EB0C00A44C71 /* ToDoListViewController.swift */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		5F2EE1192808541400DB4B13 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		5F2EE11B280F07AD00DB4B13 /* CategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewController.swift; sourceTree = "<group>"; };
 		5F35E50227B3EB0C00A44C71 /* ToDoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F35E50527B3EB0C00A44C71 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5F35E50727B3EB0C00A44C71 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				5F35E50927B3EB0C00A44C71 /* ToDoListViewController.swift */,
+				5F2EE11B280F07AD00DB4B13 /* CategoryTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -175,6 +178,7 @@
 			files = (
 				5F2EE11A2808541400DB4B13 /* DataModel.xcdatamodeld in Sources */,
 				5F35E50A27B3EB0C00A44C71 /* ToDoListViewController.swift in Sources */,
+				5F2EE11C280F07AD00DB4B13 /* CategoryTableViewController.swift in Sources */,
 				5F35E50627B3EB0C00A44C71 /* AppDelegate.swift in Sources */,
 				5F35E50827B3EB0C00A44C71 /* SceneDelegate.swift in Sources */,
 			);
