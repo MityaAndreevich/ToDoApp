@@ -6,18 +6,87 @@
 //
 
 import UIKit
+import CoreData
 
 class CategoryTableViewController: UITableViewController {
+    
+    var categoryArray = [Category]()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    override func viewWillAppear(_ animated: Bool) {
+        setNavBar()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setNavBar()
-
+        loadCategories()
     }
 
-    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+    //MARK: - TableView Datasource methods
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        categoryArray.count
     }
     
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        var content = cell.defaultContentConfiguration()
+        
+        let category = categoryArray[indexPath.row]
+        content.text = category.name
+        
+        cell.contentConfiguration = content
+        return cell
+    }
+    
+    //MARK: - Add New Category
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add new ToDo category", message: "", preferredStyle: .alert)
+        let action  = UIAlertAction(title: "Add Category", style: .default) { action in
+            //what will happen when the user click the Add category button on UIAlert
+            
+            let newCategory = Category(context: self.context)
+            newCategory.name = textField.text ?? "New Category"
+            
+            self.categoryArray.append(newCategory)
+            
+            self.saveCategories()
+        }
+        
+        alert.addTextField { alertTextField in
+            alertTextField.placeholder = "Create new category"
+            textField = alertTextField
+        }
+        
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    
+    //MARK: - Data Manipulation Methods
+    func saveCategories() {
+        
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context, \(error)")
+        }
+        
+        tableView.reloadData()
+    }
+    
+    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+    
+       do {
+       categoryArray = try context.fetch(request)
+       } catch {
+           print("Error fetching data from context \(error)")
+       }
+        tableView.reloadData()
+    }
+    
+    //MARK: - TableView Delegate Methods
 }
 //MARK: - Navigation Bar Appearance
 extension CategoryTableViewController {
