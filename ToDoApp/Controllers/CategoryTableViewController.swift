@@ -16,12 +16,12 @@ class CategoryTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         setNavBar()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadCategories()
     }
-
+    
     //MARK: - TableView Datasource methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         categoryArray.count
@@ -76,7 +76,6 @@ class CategoryTableViewController: UITableViewController {
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
-    
     
     //MARK: - Data Manipulation Methods
     func saveCategories() {
