@@ -63,12 +63,12 @@ class CategoryTableViewController: UITableViewController {
         let action  = UIAlertAction(title: "Add Category", style: .default) { action in
             //what will happen when the user click the Add category button on UIAlert
             
-            let newCategory = Category(context: self.context)
+            let newCategory = Category()
             newCategory.name = textField.text ?? "New Category"
             
             self.categoryArray.append(newCategory)
             
-            self.saveCategories()
+            self.save(category: newCategory)
         }
         
         alert.addTextField { alertTextField in
@@ -81,10 +81,12 @@ class CategoryTableViewController: UITableViewController {
     }
     
     //MARK: - Data Manipulation Methods
-    func saveCategories() {
+    func save(category: Category) {
         
         do {
-            try context.save()
+            try realm.write({
+                realm.add(category)
+            })
         } catch {
             print("Error saving category context, \(error)")
         }
@@ -92,15 +94,15 @@ class CategoryTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+    func loadCategories() {
         
-        do {
-            categoryArray = try context.fetch(request)
-            tableView.reloadData()
-        } catch {
-            print("Error fetching category data from context \(error)")
-        }
-    }
+//        do {
+//            categoryArray = try context.fetch(request)
+//            tableView.reloadData()
+//        } catch {
+//            print("Error fetching category data from context \(error)")
+//        }
+   }
 }
 //MARK: - Navigation Bar Appearance
 extension CategoryTableViewController {
