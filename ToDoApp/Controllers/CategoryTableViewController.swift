@@ -6,9 +6,12 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
+
 
 class CategoryTableViewController: UITableViewController {
+    
+    let realm = try! Realm()
     
     var categoryArray = [Category]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
