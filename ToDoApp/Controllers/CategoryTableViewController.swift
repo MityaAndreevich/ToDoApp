@@ -98,7 +98,6 @@ class CategoryTableViewController: UITableViewController {
             print("Error fetching category data from context \(error)")
         }
     }
-    
 }
 //MARK: - Navigation Bar Appearance
 extension CategoryTableViewController {
