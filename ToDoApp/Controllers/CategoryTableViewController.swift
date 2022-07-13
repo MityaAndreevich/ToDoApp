@@ -13,8 +13,7 @@ class CategoryTableViewController: UITableViewController {
     
     let realm = try! Realm()
     
-    var categoryArray = [Category]()
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var categories: Results<Category>?
     
     override func viewWillAppear(_ animated: Bool) {
         setNavBar()
@@ -27,15 +26,15 @@ class CategoryTableViewController: UITableViewController {
     
     //MARK: - TableView Datasource methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        categoryArray.count
+        categories?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         var content = cell.defaultContentConfiguration()
         
-        let category = categoryArray[indexPath.row]
-        content.text = category.name
+        let category = categories?[indexPath.row]
+        content.text = category?.name ?? "No categories added yet"
         
         cell.contentConfiguration = content
         return cell
@@ -50,7 +49,7 @@ class CategoryTableViewController: UITableViewController {
         let destinationVC = segue.destination as! ToDoListViewController
         
         if let indexPath = tableView.indexPathForSelectedRow {
-            destinationVC.selectedCategory = categoryArray[indexPath.row]
+            destinationVC.selectedCategory = categories?[indexPath.row]
         }
         
     }
@@ -66,7 +65,6 @@ class CategoryTableViewController: UITableViewController {
             let newCategory = Category()
             newCategory.name = textField.text ?? "New Category"
             
-            self.categoryArray.append(newCategory)
             
             self.save(category: newCategory)
         }
@@ -95,13 +93,8 @@ class CategoryTableViewController: UITableViewController {
     }
     
     func loadCategories() {
-        
-//        do {
-//            categoryArray = try context.fetch(request)
-//            tableView.reloadData()
-//        } catch {
-//            print("Error fetching category data from context \(error)")
-//        }
+        categories = realm.objects(Category.self)
+        tableView.reloadData()
    }
 }
 //MARK: - Navigation Bar Appearance
