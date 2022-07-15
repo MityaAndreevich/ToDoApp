@@ -12,7 +12,6 @@ import RealmSwift
 class CategoryTableViewController: UITableViewController {
     
     let realm = try! Realm()
-    
     var categories: Results<Category>?
     
     override func viewWillAppear(_ animated: Bool) {

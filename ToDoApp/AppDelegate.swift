@@ -12,8 +12,8 @@ import RealmSwift
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        //print(Realm.Configuration.defaultConfiguration.fileURL)
+        // if we need to find realm file
+        print(Realm.Configuration.defaultConfiguration.fileURL)
         // Realm migration code
         Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 1, migrationBlock: { migration, oldSchemaVersion in
             if (oldSchemaVersion < 1) {
@@ -27,16 +27,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
         
         do {
-            let realm = try Realm()
+            _ = try Realm()
         } catch {
             print("Error initilizing new realm, \(error)")
         }
         
         return true
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        //self.saveContext()
     }
 }
 

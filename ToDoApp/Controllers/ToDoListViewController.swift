@@ -39,12 +39,11 @@ class ToDoListViewController: UITableViewController {
         
         if let item = todoItems?[indexPath.row] {
             content.text = item.title
-            
             cell.accessoryType  = item.done ? .checkmark : .none
-            
             cell.contentConfiguration = content
         } else {
             content.text = "No items added yet"
+            cell.contentConfiguration = content
         }
         
         return cell
@@ -115,7 +114,6 @@ class ToDoListViewController: UITableViewController {
     
     func loadItems() {
         todoItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
-
         tableView.reloadData()
     }
 }

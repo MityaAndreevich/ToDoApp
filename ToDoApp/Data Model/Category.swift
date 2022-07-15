@@ -9,6 +9,7 @@ import Foundation
 import RealmSwift
 
 class Category: Object {
+    // in latest versions @Persisted is used instead of old variants with @objc and dynamic
     @Persisted var name: String = ""
     @Persisted var items = List<Item>()
 }
