@@ -8,7 +8,6 @@
 import UIKit
 import RealmSwift
 
-
 class CategoryTableViewController: UITableViewController {
     
     let realm = try! Realm()
@@ -50,8 +49,19 @@ class CategoryTableViewController: UITableViewController {
         if let indexPath = tableView.indexPathForSelectedRow {
             destinationVC.selectedCategory = categories?[indexPath.row]
         }
-        
     }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let category = categories?[indexPath.row]
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
+            self.deleteCategories(category: category!)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+
+
     
     //MARK: - Add New Category
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -60,11 +70,8 @@ class CategoryTableViewController: UITableViewController {
         let alert = UIAlertController(title: "Add new ToDo category", message: "", preferredStyle: .alert)
         let action  = UIAlertAction(title: "Add Category", style: .default) { action in
             //what will happen when the user click the Add category button on UIAlert
-            
             let newCategory = Category()
             newCategory.name = textField.text ?? "New Category"
-            
-            
             self.save(category: newCategory)
         }
         
@@ -94,7 +101,18 @@ class CategoryTableViewController: UITableViewController {
     func loadCategories() {
         categories = realm.objects(Category.self)
         tableView.reloadData()
-   }
+    }
+    
+    func deleteCategories(category: Category) {
+        do {
+            try realm.write {
+                realm.delete(category.items)
+                realm.delete(category)
+            }
+        }catch {
+            print("Error wjile deleting \(error)")
+        }
+    }
 }
 //MARK: - Navigation Bar Appearance
 extension CategoryTableViewController {

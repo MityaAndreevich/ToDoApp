@@ -15,7 +15,7 @@ class ToDoListViewController: UITableViewController {
     
     var selectedCategory: Category? {
         didSet {
-          loadItems()
+            loadItems()
         }
     }
     
@@ -25,7 +25,6 @@ class ToDoListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     //MARK: - TableView Data Source Methods
@@ -45,7 +44,6 @@ class ToDoListViewController: UITableViewController {
             content.text = "No items added yet"
             cell.contentConfiguration = content
         }
-        
         return cell
     }
     
@@ -136,18 +134,12 @@ extension ToDoListViewController: UISearchBarDelegate {
         todoItems = todoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
         
         tableView.reloadData()
-
-//        let request : NSFetchRequest<Item> = Item.fetchRequest()
-//        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-//
-//        loadItems(with: request, predicate: predicate)
     }
-
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
             loadItems()
-
+            
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()
             }
