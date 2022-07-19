@@ -52,16 +52,22 @@ class CategoryTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let category = categories?[indexPath.row]
-        
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
-            self.deleteCategories(category: category!)
+            if let category = self.categories?[indexPath.row] {
+                do {
+                    try self.realm.write {
+                        self.realm.delete(category.items)
+                        self.realm.delete(category)
+                    }
+                } catch {
+                    print("Error while deleting")
+                }
+                //tableView.reloadData()
+            }
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
-
-
     
     //MARK: - Add New Category
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -103,16 +109,16 @@ class CategoryTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func deleteCategories(category: Category) {
-        do {
-            try realm.write {
-                realm.delete(category.items)
-                realm.delete(category)
-            }
-        }catch {
-            print("Error wjile deleting \(error)")
-        }
-    }
+//    func deleteCategories(category: Category) {
+//        do {
+//            try realm.write {
+//                realm.delete(category.items)
+//                realm.delete(category)
+//            }
+//        }catch {
+//            print("Error wjile deleting \(error)")
+//        }
+//    }
 }
 //MARK: - Navigation Bar Appearance
 extension CategoryTableViewController {
