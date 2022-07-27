@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class CategoryTableViewController: UITableViewController {
+class CategoryTableViewController: SwipeTableViewController {
     
     let realm = try! Realm()
     var categories: Results<Category>?
@@ -28,7 +28,9 @@ class CategoryTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        
+        //let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         var content = cell.defaultContentConfiguration()
         
         let category = categories?[indexPath.row]
@@ -49,24 +51,6 @@ class CategoryTableViewController: UITableViewController {
         if let indexPath = tableView.indexPathForSelectedRow {
             destinationVC.selectedCategory = categories?[indexPath.row]
         }
-    }
-    
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
-            if let category = self.categories?[indexPath.row] {
-                do {
-                    try self.realm.write {
-                        self.realm.delete(category.items)
-                        self.realm.delete(category)
-                    }
-                } catch {
-                    print("Error while deleting")
-                }
-                //tableView.reloadData()
-            }
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-        }
-        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
     
     //MARK: - Add New Category
@@ -109,16 +93,19 @@ class CategoryTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
-//    func deleteCategories(category: Category) {
-//        do {
-//            try realm.write {
-//                realm.delete(category.items)
-//                realm.delete(category)
-//            }
-//        }catch {
-//            print("Error wjile deleting \(error)")
-//        }
-//    }
+    //MARK: - Delete Data from Swipe
+    override func updateModel(at indexPath: IndexPath) {
+        if let category = self.categories?[indexPath.row] {
+            do {
+                try self.realm.write {
+                    self.realm.delete(category.items)
+                    self.realm.delete(category)
+                }
+            } catch {
+                print("Error while deleting")
+            }
+        }
+    }
 }
 //MARK: - Navigation Bar Appearance
 extension CategoryTableViewController {
