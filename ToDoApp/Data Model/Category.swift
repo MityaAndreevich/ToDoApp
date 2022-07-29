@@ -5,7 +5,6 @@
 //  Created by Dmitry Logachev on 09.07.2022.
 //
 
-import Foundation
 import RealmSwift
 
 class Category: Object {

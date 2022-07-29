@@ -5,12 +5,11 @@
 //  Created by Dmitry Logachev on 19.04.2022.
 //
 
-import UIKit
 import RealmSwift
 
 class CategoryTableViewController: SwipeTableViewController {
     
-    let realm = try! Realm()
+    //let realm = try! Realm()
     var categories: Results<Category>?
     
     override func viewWillAppear(_ animated: Bool) {
@@ -19,7 +18,8 @@ class CategoryTableViewController: SwipeTableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadCategories()
+        categories = StorageManager.shared.realm.objects(Category.self)
+        //loadCategories()
     }
     
     //MARK: - TableView Datasource methods
@@ -30,7 +30,6 @@ class CategoryTableViewController: SwipeTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         var content = cell.defaultContentConfiguration()
         
         let category = categories?[indexPath.row]
@@ -76,34 +75,20 @@ class CategoryTableViewController: SwipeTableViewController {
     
     //MARK: - Data Manipulation Methods
     func save(category: Category) {
-        
-        do {
-            try realm.write({
-                realm.add(category)
-            })
-        } catch {
-            print("Error saving category context, \(error)")
-        }
+        StorageManager.shared.save(category: category)
         
         tableView.reloadData()
     }
     
     func loadCategories() {
-        categories = realm.objects(Category.self)
+        categories = StorageManager.shared.realm.objects(Category.self)
         tableView.reloadData()
     }
     
     //MARK: - Delete Data from Swipe
     override func updateModel(at indexPath: IndexPath) {
         if let category = self.categories?[indexPath.row] {
-            do {
-                try self.realm.write {
-                    self.realm.delete(category.items)
-                    self.realm.delete(category)
-                }
-            } catch {
-                print("Error while deleting")
-            }
+            StorageManager.shared.delete(category: category)
         }
     }
 }

@@ -5,7 +5,6 @@
 //  Created by Dmitry Logachev on 09.02.2022.
 //
 
-import UIKit
 import RealmSwift
 
 class ToDoListViewController: SwipeTableViewController {
@@ -52,14 +51,7 @@ class ToDoListViewController: SwipeTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if let item = todoItems?[indexPath.row] {
-            do {
-                try realm.write{
-                    //realm.delete(item)
-                    item.done = !item.done
-                }
-            } catch {
-                print("Error saving done status, \(error)")
-            }
+            StorageManager.shared.done(item: item)
         }
         tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
@@ -74,17 +66,8 @@ class ToDoListViewController: SwipeTableViewController {
         let action  = UIAlertAction(title: "Add Item", style: .default) { action in
             //what will happen when the user click the Add item button on UIAlert
             
-            if let currentCategory = self.selectedCategory {
-                do {
-                    try self.realm.write{
-                        let newItem = Item()
-                        newItem.title = textField.text ?? "New Task"
-                        newItem.dateCreated = Date()
-                        currentCategory.items.append(newItem)
-                    }
-                } catch {
-                    print("Error saving items, \(error)")
-                }
+            if self.selectedCategory != nil {
+                StorageManager.shared.save(itemWith: textField.text ?? "", to: self.selectedCategory!)
             }
             self.tableView.reloadData()
         }
@@ -99,33 +82,15 @@ class ToDoListViewController: SwipeTableViewController {
     }
     
     //MARK: - Model Manipulation Methods
-    func saveItems(_ items: Item) {
-        do {
-            try realm.write({
-                realm.add(items)
-            })
-        } catch {
-            print("Error occurd \(error)")
-        }
-        
-        tableView.reloadData()
-    }
-    
     func loadItems() {
-        todoItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
+        todoItems = selectedCategory?.items.sorted(byKeyPath: "dateCreated", ascending: true)
         tableView.reloadData()
     }
     
     //MARK: - Delete Data from Swipe
     override func updateModel(at indexPath: IndexPath) {
         if let item = self.todoItems?[indexPath.row] {
-            do {
-                try self.realm.write {
-                    self.realm.delete(item)
-                }
-            } catch {
-                print("Error while deleting")
-            }
+            StorageManager.shared.delete(item: item)
         }
     }
 }
