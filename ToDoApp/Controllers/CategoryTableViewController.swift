@@ -6,9 +6,11 @@
 //
 
 import RealmSwift
+import UIKit
 
 class CategoryTableViewController: SwipeTableViewController {
-    
+    var myColor: UIColor = .randomColor
+    //lazy var color = randomColor()
     //let realm = try! Realm()
     var categories: Results<Category>?
     
@@ -34,7 +36,9 @@ class CategoryTableViewController: SwipeTableViewController {
         
         let category = categories?[indexPath.row]
         content.text = category?.name ?? "No categories added yet"
-        
+        myColor = colorWithHexString(hexString:category?.color ?? "")
+        cell.backgroundColor = myColor
+        //cell.backgroundColor = UIColor.getHexValue(categor)
         cell.contentConfiguration = content
         return cell
     }
@@ -61,6 +65,7 @@ class CategoryTableViewController: SwipeTableViewController {
             //what will happen when the user click the Add category button on UIAlert
             let newCategory = Category()
             newCategory.name = textField.text ?? "New Category"
+            newCategory.color = UIColor.randomColor.getHexValue() ?? ""
             self.save(category: newCategory)
         }
         
@@ -101,5 +106,47 @@ extension CategoryTableViewController {
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationItem.standardAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
+    }
+}
+
+extension UIColor {
+    static var randomColor: UIColor { return UIColor(red: .random(in: 0...1),
+                                                     green: .random(in: 0...1),
+                                                     blue: .random(in: 0...1),
+                                                     alpha: 1)}
+    
+    func getHexValue() -> String? {
+        guard var components = self.cgColor.components else { return nil }
+        
+        if self.cgColor.numberOfComponents == 4 { components.removeLast() } // removes alpha value
+        
+        let rgbValues = components.map{ Int($0 * CGFloat(255)) } // convert UIColor components to RGB
+        let hexValues = rgbValues.map{ String(format: "%02x", $0) } // convert RGB to hexidecimal values
+        return "#" + hexValues.joined().uppercased()  // concatenate string
+      }
+}
+extension CategoryTableViewController {
+    func colorWithHexString(hexString: String, alpha:CGFloat = 1.0) -> UIColor {
+        
+        // Convert hex string to an integer
+        let hexint = Int(self.intFromHexString(hexStr: hexString))
+        let red = CGFloat((hexint & 0xff0000) >> 16) / 255.0
+        let green = CGFloat((hexint & 0xff00) >> 8) / 255.0
+        let blue = CGFloat((hexint & 0xff) >> 0) / 255.0
+        
+        // Create color object, specifying alpha as well
+        let color = UIColor(red: red, green: green, blue: blue, alpha: alpha)
+        return color
+    }
+    
+    func intFromHexString(hexStr: String) -> UInt32 {
+        var hexInt: UInt32 = 0
+        // Create scanner
+        let scanner: Scanner = Scanner(string: hexStr)
+        // Tell scanner to skip the # character
+        scanner.charactersToBeSkipped = CharacterSet(charactersIn: "#")
+        // Scan hex value
+        hexInt = UInt32(bitPattern: scanner.scanInt32(representation: .hexadecimal) ?? 0)
+        return hexInt
     }
 }

@@ -18,7 +18,7 @@ class SwipeTableViewController: UITableViewController {
     // TableView Datasource Methods
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.backgroundColor = randomColor()
+        //cell.backgroundColor = randomColor()
         return cell
     }
     
@@ -37,13 +37,13 @@ class SwipeTableViewController: UITableViewController {
     }
 }
 
-extension SwipeTableViewController {
-    private func randomColor() -> UIColor {
-        let randomColor = UIColor(
-            red: .random(in: 0...1),
-            green: .random(in: 0...1),
-            blue: .random(in: 0...1),
-            alpha: .random(in: 0...1))
-        return randomColor
-    }
-}
+//extension SwipeTableViewController {
+//    private func randomColor() -> UIColor {
+//        let randomColor = UIColor(
+//            red: .random(in: 0...1),
+//            green: .random(in: 0...1),
+//            blue: .random(in: 0...1),
+//            alpha: .random(in: 0...1))
+//        return randomColor
+//    }
+//}
