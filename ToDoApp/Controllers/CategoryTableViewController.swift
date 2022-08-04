@@ -10,8 +10,6 @@ import UIKit
 
 class CategoryTableViewController: SwipeTableViewController {
     var myColor: UIColor = .randomColor
-    //lazy var color = randomColor()
-    //let realm = try! Realm()
     var categories: Results<Category>?
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,7 +34,7 @@ class CategoryTableViewController: SwipeTableViewController {
         
         let category = categories?[indexPath.row]
         content.text = category?.name ?? "No categories added yet"
-        myColor = colorWithHexString(hexString:category?.color ?? "")
+        myColor = colorWithHexString(hexString:category?.color ?? "A66CFF")
         cell.backgroundColor = myColor
         //cell.backgroundColor = UIColor.getHexValue(categor)
         cell.contentConfiguration = content
@@ -108,7 +106,7 @@ extension CategoryTableViewController {
         navigationItem.scrollEdgeAppearance = appearance
     }
 }
-
+//MARK: - UIColor to Hex value
 extension UIColor {
     static var randomColor: UIColor { return UIColor(red: .random(in: 0...1),
                                                      green: .random(in: 0...1),
@@ -125,6 +123,7 @@ extension UIColor {
         return "#" + hexValues.joined().uppercased()  // concatenate string
       }
 }
+//MARK: - Converting hex to UIColor
 extension CategoryTableViewController {
     func colorWithHexString(hexString: String, alpha:CGFloat = 1.0) -> UIColor {
         
