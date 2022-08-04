@@ -9,7 +9,6 @@ import RealmSwift
 import UIKit
 
 class CategoryTableViewController: SwipeTableViewController {
-    var myColor: UIColor = .randomColor
     var categories: Results<Category>?
     
     override func viewWillAppear(_ animated: Bool) {
@@ -34,9 +33,7 @@ class CategoryTableViewController: SwipeTableViewController {
         
         let category = categories?[indexPath.row]
         content.text = category?.name ?? "No categories added yet"
-        myColor = colorWithHexString(hexString:category?.color ?? "A66CFF")
-        cell.backgroundColor = myColor
-        //cell.backgroundColor = UIColor.getHexValue(categor)
+        cell.backgroundColor = colorWithHexString(hexString:category?.color ?? "A66CFF")
         cell.contentConfiguration = content
         return cell
     }
@@ -79,7 +76,6 @@ class CategoryTableViewController: SwipeTableViewController {
     //MARK: - Data Manipulation Methods
     func save(category: Category) {
         StorageManager.shared.save(category: category)
-        
         tableView.reloadData()
     }
     
