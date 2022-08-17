@@ -38,6 +38,7 @@ class ToDoListViewController: SwipeTableViewController {
         
         if let item = todoItems?[indexPath.row] {
             content.text = item.title
+           // cell.backgroundColor = .red()
             cell.accessoryType  = item.done ? .checkmark : .none
             cell.contentConfiguration = content
         } else {
